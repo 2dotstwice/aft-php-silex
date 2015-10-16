@@ -8,6 +8,22 @@ require_once __DIR__ . '/../vendor/autoload.php';
 $app = new Silex\Application();
 $app['debug'] = true;
 
+$app->register(new Silex\Provider\TwigServiceProvider(), array(
+    'twig.path' => __DIR__ . '/../templates',
+));
+
+$app->get(
+    '/guestbook',
+    function () use ($app) {
+        $form = $app['twig']->render(
+            'guestbook.twig',
+            ['postUrl' => '/guestbook']
+        );
+
+        return new Response($form);
+    }
+);
+
 /**
  * Handling requests - Basic GET request.
  */
@@ -117,10 +133,6 @@ $app->error(
 /**
  * Twig templates
  */
-$app->register(new Silex\Provider\TwigServiceProvider(), array(
-    'twig.path' => __DIR__ . '/../templates',
-));
-
 $app->get(
     'blog',
     function(Request $request) use ($app) {
