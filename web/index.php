@@ -16,12 +16,12 @@ $app->register(new Silex\Provider\TwigServiceProvider(), array(
 $app->get(
     '/guestbook',
     function (Application $app) {
-        $form = $app['twig']->render(
+        $html = $app['twig']->render(
             'guestbook.twig',
             ['postUrl' => '/guestbook']
         );
 
-        return new Response($form);
+        return new Response($html);
     }
 );
 
