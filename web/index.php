@@ -1,5 +1,6 @@
 <?php
 
+use \Silex\Application;
 use \Symfony\Component\HttpFoundation\Request;
 use \Symfony\Component\HttpFoundation\Response;
 
@@ -14,7 +15,7 @@ $app->register(new Silex\Provider\TwigServiceProvider(), array(
 
 $app->get(
     '/guestbook',
-    function () use ($app) {
+    function (Application $app) {
         $form = $app['twig']->render(
             'guestbook.twig',
             ['postUrl' => '/guestbook']
