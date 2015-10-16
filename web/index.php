@@ -50,12 +50,12 @@ $app->post(
                 'guestbook.twig',
                 [
                     'submitUrl' => '/guestbook',
+                    'entries' => readGuestbookEntries(),
                     'errors' => $errors,
                     'formValues' => [
                         'name' => $name,
                         'message' => $message,
                     ],
-                    'entries' => readGuestbookEntries()
                 ]
             );
 
