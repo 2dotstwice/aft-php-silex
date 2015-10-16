@@ -136,7 +136,7 @@ $app->error(
  */
 $app->get(
     'blog',
-    function(Request $request) use ($app) {
+    function(Request $request, Application $app) {
         $posts = [
             1 => 'Just another Silex blog.',
             2 => 'My thoughts on PHP.',
@@ -162,7 +162,7 @@ $app->register(new Silex\Provider\SessionServiceProvider());
 
 $app->post(
     '/login',
-    function (Request $request) use ($app) {
+    function (Request $request, Application $app) {
         $username = $request->request->get('username');
         $password = $request->request->get('password');
 
@@ -180,7 +180,7 @@ $app->post(
  */
 $app->get(
     '/user',
-    function (Request $request) use ($app) {
+    function (Request $request, Application $app) {
         $username = $app['session']->get('username');
 
         if (!empty($username)) {
