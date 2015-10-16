@@ -1,6 +1,7 @@
 <?php
 
 use \Silex\Application;
+use \Symfony\Component\HttpFoundation\RedirectResponse;
 use \Symfony\Component\HttpFoundation\Request;
 use \Symfony\Component\HttpFoundation\Response;
 
@@ -24,6 +25,41 @@ $app->get(
         return new Response($form);
     }
 );
+
+$app->post(
+    '/guestbook',
+    function (Request $request, Application $app) {
+        $name = $request->request->get('name');
+        $message = $request->request->get('message');
+
+        $post = [
+            'id' => uniqid(),
+            'created' => time(),
+            'name' => $name,
+            'message' => $message,
+        ];
+
+        saveGuestbookEntry($post);
+
+        return new RedirectResponse('/guestbook');
+    }
+);
+
+function saveGuestbookEntry($entry) {
+    $filepath = __DIR__ . '/files/guestbook-entries.json';
+
+    $entries = [];
+
+    if (file_exists($filepath)) {
+        $contents = file_get_contents($filepath);
+        $entries = json_decode($contents);
+    }
+
+    $entries[] = $entry;
+    $json = json_encode($entries);
+
+    file_put_contents($filepath, $json);
+}
 
 /**
  * Handling requests - Basic GET request.
