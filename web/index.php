@@ -46,7 +46,7 @@ $app->post(
             $html = $app['twig']->render(
                 'guestbook.twig',
                 [
-                    'postUrl' => '/guestbook',
+                    'submitUrl' => '/guestbook',
                     'errors' => $errors,
                     'formValues' => [
                         'name' => $name,
