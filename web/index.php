@@ -32,6 +32,32 @@ $app->post(
         $name = $request->request->get('name');
         $message = $request->request->get('message');
 
+        $errors = [];
+
+        if (empty($name)) {
+            $errors[] = 'Please enter your name.';
+        }
+
+        if (empty($message)) {
+            $errors[] = 'Please enter a message.';
+        }
+
+        if (!empty($errors)) {
+            $html = $app['twig']->render(
+                'guestbook.twig',
+                [
+                    'postUrl' => '/guestbook',
+                    'errors' => $errors,
+                    'formValues' => [
+                        'name' => $name,
+                        'message' => $message,
+                    ]
+                ]
+            );
+
+            return new Response($html);
+        }
+
         $post = [
             'id' => uniqid(),
             'created' => time(),
