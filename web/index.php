@@ -19,7 +19,10 @@ $app->get(
     function (Application $app) {
         $html = $app['twig']->render(
             'guestbook.twig',
-            ['submitUrl' => '/guestbook']
+            [
+                'submitUrl' => '/guestbook',
+                'entries' => readGuestbookEntries()
+            ]
         );
 
         return new Response($html);
@@ -51,7 +54,8 @@ $app->post(
                     'formValues' => [
                         'name' => $name,
                         'message' => $message,
-                    ]
+                    ],
+                    'entries' => readGuestbookEntries()
                 ]
             );
 
@@ -74,6 +78,17 @@ $app->post(
 function saveGuestbookEntry($entry) {
     $filepath = __DIR__ . '/files/guestbook-entries.json';
 
+    $entries = readGuestbookEntries();
+    $entries[] = $entry;
+
+    $json = json_encode($entries);
+
+    file_put_contents($filepath, $json);
+}
+
+function readGuestbookEntries() {
+    $filepath = __DIR__ . '/files/guestbook-entries.json';
+
     $entries = [];
 
     if (file_exists($filepath)) {
@@ -81,10 +96,7 @@ function saveGuestbookEntry($entry) {
         $entries = json_decode($contents);
     }
 
-    $entries[] = $entry;
-    $json = json_encode($entries);
-
-    file_put_contents($filepath, $json);
+    return $entries;
 }
 
 /**
