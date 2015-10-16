@@ -1,0 +1,55 @@
+{% extends "page.twig" %}
+
+{% block title %}
+    Guestbook
+{% endblock %}
+
+{% block content %}
+    <h2>Guestbook</h2>
+    <hr />
+
+    <!-- New entry form. -->
+    <form method="POST" action="{{ submitUrl }}">
+        <!-- Show error box if there are any errors. -->
+        {% if errors is defined and errors is not empty %}
+            <div class="alert alert-danger">
+                <!-- Loop over all errors and display each one. -->
+                {% for error in errors %}
+                    <p>{{ error }}</p>
+                {% endfor %}
+            </div>
+        {% endif %}
+
+        <!-- Name label and input -->
+        <div class="form-group required">
+            <label for="name" class="control-label">Name</label>
+            <input id="name" name="name" type="text" value="{{ formValues.name|default('') }}" class="form-control"  />
+        </div>
+
+        <!-- Message label and input -->
+        <div class="form-group required">
+            <label for="message" class="control-label">Message</label>
+            <textarea id="message" name="message" rows="7" class="form-control">{{ formValues.message|default('') }}</textarea>
+        </div>
+
+        <!-- Submit button -->
+        <input type="submit" value="Post message" class="btn btn-primary" />
+    </form>
+
+    <!-- Guestbook entries -->
+    <hr />
+    {% if entries is not defined or entries is empty %}
+        <p>No guestbook entries yet. Be the first to post something amazing!</p>
+    {% endif %}
+
+    {% if entries is defined and entries is not empty %}
+        {% for entry in entries|reverse %}
+            <div class="entry">
+                <p>Posted by <strong>{{ entry.name }}</strong> at <strong>{{ entry.created|date }}</strong>.</p>
+                <p>{{ entry.message|nl2br }}</p>
+            </div>
+
+            <hr />
+        {% endfor %}
+    {% endif %}
+{% endblock %}
