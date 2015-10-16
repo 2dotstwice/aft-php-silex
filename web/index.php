@@ -18,7 +18,7 @@ $app->get(
     function (Application $app) {
         $html = $app['twig']->render(
             'guestbook.twig',
-            ['postUrl' => '/guestbook']
+            ['submitUrl' => '/guestbook']
         );
 
         return new Response($html);
