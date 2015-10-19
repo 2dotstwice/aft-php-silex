@@ -108,6 +108,7 @@ $app->get(
             'registration.twig',
             [
                 'submitUrl' => '/user/registration',
+                'loginUrl' => '/user/login',
             ]
         );
 
