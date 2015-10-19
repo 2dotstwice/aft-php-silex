@@ -148,7 +148,8 @@ $app->post(
             $html = $app['twig']->render(
                 'registration.twig',
                 [
-                    'submitUrl' => '/registration',
+                    'submitUrl' => '/user/registration',
+                    'loginUrl' => '/user/login',
                     'errors' => $errors,
                     'formValues' => [
                         'username' => $username,
@@ -180,7 +181,8 @@ $app->get(
         $html = $app['twig']->render(
             'login.twig',
             [
-                'submitUrl' => '/user/login'
+                'submitUrl' => '/user/login',
+                'registrationUrl' => '/user/registration'
             ]
         );
 
@@ -204,6 +206,7 @@ $app->post(
                 'login.twig',
                 [
                     'submitUrl' => '/user/login',
+                    'registrationUrl' => '/user/registration',
                     'errors' => [
                         'The username or password you entered are incorrect.'
                     ],
