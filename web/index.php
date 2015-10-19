@@ -83,7 +83,7 @@ function saveGuestbookEntry($entry) {
         $entries = json_decode($contents);
     }
 
-    $entries[] = $entry;
+    $entries[$entry['id']] = $entry;
     $json = json_encode($entries);
 
     file_put_contents($filepath, $json);
