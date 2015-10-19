@@ -81,7 +81,7 @@ function saveGuestbookEntry($entry) {
     $filepath = __DIR__ . '/files/guestbook-entries.json';
 
     $entries = readGuestbookEntries();
-    $entries[] = $entry;
+    $entries[$entry['id']] = $entry;
 
     $json = json_encode($entries);
 
