@@ -1,0 +1,30 @@
+{% extends "page.twig" %}
+
+{% block title %}
+    Login
+{% endblock %}
+
+{% block content %}
+    <h2>Login</h2>
+    <hr />
+
+    <!-- Login form. -->
+    <form method="POST" action="{{ submitUrl }}">
+        {% include "errors.twig" %}
+
+        <!-- Username label and input -->
+        <div class="form-group required">
+            <label for="username" class="control-label">Username</label>
+            <input id="username" name="username" type="text" value="{{ formValues.username|default('') }}" class="form-control"  />
+        </div>
+
+        <!-- Password label and input -->
+        <div class="form-group required">
+            <label for="password" class="control-label">Password</label>
+            <input id="password" name="password" type="password" class="form-control"  />
+        </div>
+
+        <!-- Submit button -->
+        <input type="submit" value="Login" class="btn btn-primary" />
+    </form>
+{% endblock %}
