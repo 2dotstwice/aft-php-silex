@@ -44,5 +44,9 @@
 
         <!-- Submit button -->
         <input type="submit" value="Create account" class="btn btn-primary" />
+
+        {% if loginUrl is defined %}
+            <a href="{{ loginUrl }}" class="btn">Already have an account?</a>
+        {% endif %}
     </form>
 {% endblock %}
