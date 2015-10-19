@@ -98,7 +98,7 @@ function readGuestbookEntries() {
         $entries = json_decode($contents);
     }
 
-    return $entries;
+    return (array) $entries;
 }
 
 include_once __DIR__ . '/examples.php';
