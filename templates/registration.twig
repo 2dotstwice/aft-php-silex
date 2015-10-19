@@ -1,0 +1,48 @@
+{% extends "page.twig" %}
+
+{% block title %}
+    Registration
+{% endblock %}
+
+{% block content %}
+    <h2>Registration</h2>
+    <hr />
+
+    <!-- New entry form. -->
+    <form method="POST" action="{{ submitUrl }}">
+        {% include "errors.twig" %}
+
+        <!-- Username label and input -->
+        <div class="form-group required">
+            <label for="username" class="control-label">Username</label>
+            <input id="username" name="username" type="text" value="{{ formValues.username|default('') }}" class="form-control"  />
+        </div>
+
+        <!-- Password label and input -->
+        <div class="form-group required">
+            <label for="password" class="control-label">Password</label>
+            <input id="password" name="password" type="password" class="form-control"  />
+        </div>
+
+        <!-- Password confirmation label and input -->
+        <div class="form-group required">
+            <label for="password-confirm" class="control-label">Confirm password</label>
+            <input id="password-confirm" name="passwordConfirmation" type="password" class="form-control"  />
+        </div>
+
+        <!-- Name label and input -->
+        <div class="form-group required">
+            <label for="name" class="control-label">Name</label>
+            <input id="name" name="name" type="text" value="{{ formValues.name|default('') }}" class="form-control"  />
+        </div>
+
+        <!-- E-mail label and input -->
+        <div class="form-group required">
+            <label for="email" class="control-label">E-mail address</label>
+            <input id="email" name="email" type="text" value="{{ formValues.email|default('') }}" class="form-control"  />
+        </div>
+
+        <!-- Submit button -->
+        <input type="submit" value="Post message" class="btn btn-primary" />
+    </form>
+{% endblock %}

@@ -101,6 +101,103 @@ function readGuestbookEntries() {
     return (array) $entries;
 }
 
+$app->get(
+    '/user/registration',
+    function (Application $app) {
+        $html = $app['twig']->render(
+            'registration.twig',
+            [
+                'submitUrl' => '/user/registration',
+            ]
+        );
+
+        return new Response($html);
+    }
+);
+
+$app->post(
+    '/user/registration',
+    function (Request $request, Application $app) {
+        $username = $request->request->get('username');
+        $password = $request->request->get('password');
+        $passwordConfirmation = $request->request->get('passwordConfirmation');
+        $name = $request->request->get('name');
+        $email = $request->request->get('email');
+
+        $errors = [];
+
+        if (empty($username)) {
+            $errors[] = 'Please enter a username.';
+        }
+        if (empty($name)) {
+            $errors[] = 'Please enter your name.';
+        }
+        if (empty($email)) {
+            $errors[] = 'Please enter your e-mail address.';
+        }
+
+        if (empty($password)) {
+            $errors[] = 'Please enter a password.';
+        } else if (empty($passwordConfirmation)) {
+            $errors[] = 'Please confirm your password.';
+        } else if ($password !== $passwordConfirmation) {
+            $errors[] = 'The passwords you entered do not match.';
+        }
+
+        if (!empty($errors)) {
+            $html = $app['twig']->render(
+                'registration.twig',
+                [
+                    'submitUrl' => '/registration',
+                    'errors' => $errors,
+                    'formValues' => [
+                        'username' => $username,
+                        'name' => $name,
+                        'email' => $email,
+                    ],
+                ]
+            );
+
+            return new Response($html);
+        }
+
+        $user = [
+            'username' => $username,
+            'password' => md5($password),
+            'name' => $name,
+            'email' => $email,
+        ];
+
+        saveUser($user);
+
+        return new RedirectResponse('/user/login');
+    }
+);
+
+function saveUser($user) {
+    $filepath = __DIR__ . '/files/users.json';
+
+    $users = readUsers();
+    $users[$user['username']] = $user;
+
+    $json = json_encode($users);
+
+    file_put_contents($filepath, $json);
+}
+
+function readUsers() {
+    $filepath = __DIR__ . '/files/users.json';
+
+    $users = [];
+
+    if (file_exists($filepath)) {
+        $contents = file_get_contents($filepath);
+        $users = json_decode($contents);
+    }
+
+    return (array) $users;
+}
+
 include_once __DIR__ . '/examples.php';
 
 $app->run();
