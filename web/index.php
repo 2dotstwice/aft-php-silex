@@ -174,6 +174,64 @@ $app->post(
     }
 );
 
+$app->get(
+    '/user/login',
+    function (Application $app) {
+        $html = $app['twig']->render(
+            'login.twig',
+            [
+                'submitUrl' => '/user/login'
+            ]
+        );
+
+        return new Response($html);
+    }
+);
+
+$app->post(
+    '/user/login',
+    function (Request $request, Application $app) {
+        $username = $request->request->get('username');
+        $password = $request->request->get('password');
+
+        $users = readUsers();
+
+        if (isset($users[$username]) && md5($password) == $users[$username]->password) {
+            $app['session']->set('username', $username);
+            return new RedirectResponse('/user/profile');
+        } else {
+            $html = $app['twig']->render(
+                'login.twig',
+                [
+                    'submitUrl' => '/user/login',
+                    'errors' => [
+                        'The username or password you entered are incorrect.'
+                    ],
+                    'formValues' => [
+                        'username' => $username
+                    ]
+                ]
+            );
+
+            return new Response($html);
+        }
+    }
+);
+
+$app->get(
+    '/user/profile',
+    function (Application $app) {
+        $html = $app['twig']->render(
+            'profile.twig',
+            [
+                'username' => $app['session']->get('username'),
+            ]
+        );
+
+        return new Response($html);
+    }
+);
+
 function saveUser($user) {
     $filepath = __DIR__ . '/files/users.json';
 
