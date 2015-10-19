@@ -1,0 +1,16 @@
+{% extends "page.twig" %}
+
+{% block title %}
+    Profile
+{% endblock %}
+
+{% block content %}
+    <h2>Profile</h2>
+    <hr />
+
+    <p>Logged in as {{ username }}.</p>
+
+    {% if logoutUrl is defined %}
+        <p><a href="{{ logoutUrl }}">Logout.</a></p>
+    {% endif %}
+{% endblock %}
