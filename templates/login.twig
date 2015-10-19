@@ -26,5 +26,9 @@
 
         <!-- Submit button -->
         <input type="submit" value="Login" class="btn btn-primary" />
+
+        {% if registrationUrl is defined %}
+            <a href="{{ registrationUrl }}" class="btn">Don't have an account?</a>
+        {% endif %}
     </form>
 {% endblock %}
