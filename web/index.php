@@ -225,10 +225,19 @@ $app->get(
             'profile.twig',
             [
                 'username' => $app['session']->get('username'),
+                'logoutUrl' => '/user/logout'
             ]
         );
 
         return new Response($html);
+    }
+);
+
+$app->get(
+    '/user/logout',
+    function (Application $app) {
+        $app['session']->remove('username');
+        return new RedirectResponse('/user/login');
     }
 );
 
