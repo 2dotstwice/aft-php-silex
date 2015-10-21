@@ -16,6 +16,16 @@ $app->register(new Silex\Provider\TwigServiceProvider(), array(
     'twig.path' => __DIR__ . '/../templates',
 ));
 
+$redirectIfNotLoggedIn = function (Request $request, Application $app) {
+    $username = $app['session']->get('username');
+
+    if (empty($username)) {
+        return new RedirectResponse('/user/login');
+    }
+
+    return null;
+};
+
 $app->get(
     '/guestbook',
     function (Application $app) {
@@ -29,7 +39,7 @@ $app->get(
 
         return new Response($html);
     }
-);
+)->before($redirectIfNotLoggedIn);
 
 $app->post(
     '/guestbook',
@@ -75,7 +85,7 @@ $app->post(
 
         return new RedirectResponse('/guestbook');
     }
-);
+)->before($redirectIfNotLoggedIn);
 
 function saveGuestbookEntry($entry) {
     $filepath = __DIR__ . '/files/guestbook-entries.json';
@@ -235,7 +245,7 @@ $app->get(
 
         return new Response($html);
     }
-);
+)->before($redirectIfNotLoggedIn);
 
 $app->get(
     '/user/logout',
@@ -243,7 +253,7 @@ $app->get(
         $app['session']->remove('username');
         return new RedirectResponse('/user/login');
     }
-);
+)->before($redirectIfNotLoggedIn);
 
 function saveUser($user) {
     $filepath = __DIR__ . '/files/users.json';
