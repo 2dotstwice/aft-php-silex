@@ -30,11 +30,25 @@ $redirectIfNotLoggedIn = function (Request $request, Application $app) {
 $app->get(
     '/guestbook',
     function (Application $app) {
+        $username = $app['session']->get('username');
+
+        if (!empty($username)) {
+            $users = readUsers();
+
+            if (isset($users[$username])) {
+                $user = $users[$username];
+                $name = $user->name;
+            }
+        }
+
         $html = $app['twig']->render(
             'guestbook.twig',
             [
                 'submitUrl' => '/guestbook',
-                'entries' => readGuestbookEntries()
+                'entries' => readGuestbookEntries(),
+                'formValues' => [
+                    'name' => $name
+                ],
             ]
         );
 
