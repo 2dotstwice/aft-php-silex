@@ -20,7 +20,8 @@ $redirectIfNotLoggedIn = function (Request $request, Application $app) {
     $username = $app['session']->get('username');
 
     if (empty($username)) {
-        return new RedirectResponse('/user/login');
+        $originalPath = $request->getPathInfo();
+        return new RedirectResponse('/user/login?destination=' . $originalPath);
     }
 
     return null;
@@ -188,11 +189,13 @@ $app->post(
 
 $app->get(
     '/user/login',
-    function (Application $app) {
+    function (Request $request, Application $app) {
+        $destination = $request->query->get('destination');
+
         $html = $app['twig']->render(
             'login.twig',
             [
-                'submitUrl' => '/user/login',
+                'submitUrl' => '/user/login?destination=' . $destination,
                 'registrationUrl' => '/user/registration'
             ]
         );
@@ -211,7 +214,13 @@ $app->post(
 
         if (isset($users[$username]) && md5($password) == $users[$username]->password) {
             $app['session']->set('username', $username);
-            return new RedirectResponse('/user/profile');
+
+            $destination = $request->query->get('destination');
+            if (empty($destination)) {
+                $destination = '/user/profile';
+            }
+
+            return new RedirectResponse($destination);
         } else {
             $html = $app['twig']->render(
                 'login.twig',
