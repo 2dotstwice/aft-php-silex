@@ -102,30 +102,6 @@ $app->post(
     }
 )->before($redirectIfNotLoggedIn);
 
-function saveGuestbookEntry($entry) {
-    $filepath = __DIR__ . '/files/guestbook-entries.json';
-
-    $entries = readGuestbookEntries();
-    $entries[$entry['id']] = $entry;
-
-    $json = json_encode($entries);
-
-    file_put_contents($filepath, $json);
-}
-
-function readGuestbookEntries() {
-    $filepath = __DIR__ . '/files/guestbook-entries.json';
-
-    $entries = [];
-
-    if (file_exists($filepath)) {
-        $contents = file_get_contents($filepath);
-        $entries = json_decode($contents);
-    }
-
-    return (array) $entries;
-}
-
 $app->get(
     '/user/registration',
     function (Application $app) {
@@ -278,28 +254,44 @@ $app->get(
     }
 )->before($redirectIfNotLoggedIn);
 
+define('FILES_DIR', __DIR__ . '/files');
+define('GUESTBOOK_DATA_FILE', FILES_DIR . '/guestbook-entries.json');
+define('USER_DATA_FILE', FILES_DIR . '/users.json');
+
+function saveGuestbookEntry($entry) {
+    writeJsonFileDataEntry(GUESTBOOK_DATA_FILE, $entry['id'], $entry);
+}
+
+function readGuestbookEntries() {
+    return readJsonFileData(GUESTBOOK_DATA_FILE);
+}
+
 function saveUser($user) {
-    $filepath = __DIR__ . '/files/users.json';
+    writeJsonFileDataEntry(USER_DATA_FILE, $user['username'], $user);
+}
 
-    $users = readUsers();
-    $users[$user['username']] = $user;
+function readUsers() {
+    return readJsonFileData(USER_DATA_FILE);
+}
 
-    $json = json_encode($users);
+function writeJsonFileDataEntry($filepath, $key, $entry) {
+    $data = readJsonFileData($filepath);
+    $data[$key] = $entry;
+
+    $json = json_encode($data);
 
     file_put_contents($filepath, $json);
 }
 
-function readUsers() {
-    $filepath = __DIR__ . '/files/users.json';
-
-    $users = [];
+function readJsonFileData($filepath) {
+    $data = [];
 
     if (file_exists($filepath)) {
         $contents = file_get_contents($filepath);
-        $users = json_decode($contents);
+        $data = json_decode($contents);
     }
 
-    return (array) $users;
+    return (array) $data;
 }
 
 include_once __DIR__ . '/examples.php';
