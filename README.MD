@@ -5,6 +5,10 @@ Do not use this code in a production environment for security and performance is
 
 More info: [http://www.aftleuven.be/event/web-development-track-workshop-1/](http://www.aftleuven.be/event/web-development-track-workshop-1/)
 
+## Continuing on the workshop servers
+
+Sign up at http://phpbelgium.be/ and contact metalarend to keep using the server you were working on during the workshop.
+
 ## Quick setup @ Home
 
 ### Requirements
@@ -25,6 +29,7 @@ More info: [http://www.aftleuven.be/event/web-development-track-workshop-1/](htt
 
 * Unzip the downloaded file.
 * Open the Terminal / Console / ...
+* Run `composer install`
 * `cd` to the `web` folder of the unzipped download.
 * Run `php -S localhost:8080`
 * Open `http://localhost:8080/hello` in your browser.
@@ -45,19 +50,3 @@ Set `date.timezone` in `php.ini` to `Europe/Brussels`. (If you know where the `p
 Otherwise put the following code at the top of your `index.php`:
 
 	ini_set('date.timezone', 'Europe/Brussels');
-
-
-## Workshop vhost setup
-
-### Requirements
-
-* PHP 5.4.0+ (PHP 5.5+ preferred)
-* Composer
-* Git
-
-### Setup notes
-
-* Vhost directory should be `web`
-* `web/files` should be writable by PHP.
-* `date.timezone` should be configured (as `Europe/Brussels`) in `php.ini`
-* Checkout the `workshop/0-examples` branch.
