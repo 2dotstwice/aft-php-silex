@@ -209,7 +209,7 @@ $app->post(
 
         $users = readUsers();
 
-        if (isset($users[$username]) && md5($password) == $users[$username]->password) {
+        if (isset($users[$username]) && md5($password) == $users[$username]['password']) {
             $app['session']->set('username', $username);
             return new RedirectResponse('/user/profile');
         } else {
