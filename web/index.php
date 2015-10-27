@@ -54,7 +54,7 @@ function saveGuestbookEntry($entry) {
 
     if (file_exists($filepath)) {
         $contents = file_get_contents($filepath);
-        $entries = (array)json_decode($contents);
+        $entries = json_decode($contents, true);
     }
 
     $entries[$entry['id']] = $entry;
