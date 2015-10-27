@@ -95,10 +95,10 @@ function readGuestbookEntries() {
 
     if (file_exists($filepath)) {
         $contents = file_get_contents($filepath);
-        $entries = json_decode($contents);
+        $entries = json_decode($contents, true);
     }
 
-    return (array) $entries;
+    return $entries;
 }
 
 $app->get(
@@ -254,10 +254,10 @@ function readUsers() {
 
     if (file_exists($filepath)) {
         $contents = file_get_contents($filepath);
-        $users = json_decode($contents);
+        $users = json_decode($contents, true);
     }
 
-    return (array) $users;
+    return $users;
 }
 
 include_once __DIR__ . '/examples.php';
