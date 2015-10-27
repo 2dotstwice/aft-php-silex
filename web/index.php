@@ -202,7 +202,7 @@ $app->post(
 
         $users = readUsers();
 
-        if (isset($users[$username]) && md5($password) == $users[$username]->password) {
+        if (isset($users[$username]) && md5($password) == $users[$username]['password']) {
             $app['session']->set('username', $username);
 
             $destination = $request->query->get('destination');
@@ -288,10 +288,10 @@ function readJsonFileData($filepath) {
 
     if (file_exists($filepath)) {
         $contents = file_get_contents($filepath);
-        $data = json_decode($contents);
+        $data = json_decode($contents, true);
     }
 
-    return (array) $data;
+    return $data;
 }
 
 include_once __DIR__ . '/examples.php';
