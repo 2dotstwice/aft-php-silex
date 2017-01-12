@@ -5,6 +5,8 @@ Do not use this code in a production environment for security and performance is
 
 More info: [http://www.aftleuven.be/event/web-development-track-workshop-1/](http://www.aftleuven.be/event/web-development-track-workshop-1/)
 
+Joind.in link: [https://joind.in/event/php-leuven---event-1-introduction-to-php--fast-frameworks/introduction-to-silex](https://joind.in/event/php-leuven---event-1-introduction-to-php--fast-frameworks/introduction-to-silex)
+
 ## Continuing on the workshop servers
 
 Sign up at http://phpbelgium.be/ and contact metalarend to keep using the server you were working on during the workshop.
